@@ -2,6 +2,7 @@
 public class Move 
 {
 	private Position startPosition;
+	private Position passedOverDuringJumpPosition;
 	private Position endPosition;
 	private Move nextMove;
 	
@@ -11,6 +12,21 @@ public class Move
 		this.endPosition = endPosition;
 		nextMove = null;
 	}
+
+	
+	
+	public Position getPassedOverDuringJumpPosition() {
+		return passedOverDuringJumpPosition;
+	}
+
+
+
+	public void setPassedOverDuringJumpPosition(
+			Position passedOverDuringJumpPosition) {
+		this.passedOverDuringJumpPosition = passedOverDuringJumpPosition;
+	}
+
+
 
 	public Position getStartPosition() {
 		return startPosition;
