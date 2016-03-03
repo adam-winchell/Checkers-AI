@@ -15,7 +15,7 @@ public class Board
 	private final int ENGLISH_DRAUGHT_WHITE_KING_HOME = ENGLISH_DRAUGHT_BOARD_SIZE -1;
 	private final int ENGLISH_DRAUGHT_NUMBER_OF_ROWS_FOR_PIECES = 3;
 	private final int ENGLISH_DRAUGHT_WHITE_OFFSET = ENGLISH_DRAUGHT_BOARD_SIZE - ENGLISH_DRAUGHT_NUMBER_OF_ROWS_FOR_PIECES;
-	private final boolean WHITE =true;
+	private boolean isWhiteTurn = true;
 	private final int LEFT = -1;
 	private final int RIGHT = 1;
 	private final int UP = -1;
@@ -458,13 +458,29 @@ public class Board
 	}
 	
 	/**
-	 * Makes the specified move.  As of now if a piece becomes a king during its movement, that is not taken into account when determing said movement
+	 * Performs the move by passing off to the proper methods
 	 * @param m
 	 */
 	public void makeMove(Move m)
 	{
 		oldBoards.push(makeCopy());
+		doMove(m);
+		updatePlayer();
 		
+	}
+	/**
+	 * Changes the turn order
+	 */
+	private void updatePlayer()
+	{
+		isWhiteTurn = !(isWhiteTurn); 
+	}
+	/**
+	 * Makes the specified move.  As of now if a piece becomes a king during its movement, that is not taken into account when determing said movement
+	 * @param m
+	 */
+	private void doMove(Move m)
+	{
 		Piece temp = board.get(m.getStartPosition().getCords()); //grab the piece to work with
 		
 		do
@@ -481,6 +497,7 @@ public class Board
 			board.put(m.getEndPosition().getCords(), temp);
 	
 			m = m.getNextMove();
+			
 		}while(m.getNextMove() != null);
 	}
 	
@@ -503,5 +520,6 @@ public class Board
 	public void undoMove()
 	{
 		board = oldBoards.pop();
+		updatePlayer();
 	}
 }
