@@ -1,7 +1,8 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+
 import java.util.ArrayList;
-import java.util.Scanner;
+
+
+import java.util.Stack;
 
 import processing.core.PApplet;
 
@@ -9,8 +10,18 @@ import processing.core.PApplet;
 public class DrawBoard extends PApplet implements Constants
 {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Board game = new Board();
 	int squareSize;
+	boolean clicked = false;
+	boolean clickedMouse = true;
+	int xCordOfPieceToMove;
+	int yCordOfPieceToMove;
+	Move move;
+	Player player = new Player();
 	
 	
 	public void setup()
@@ -87,6 +98,71 @@ public class DrawBoard extends PApplet implements Constants
 		}
 	}
 	
+	public void mousePressed()
+	{
+		int x = mouseX*ENGLISH_DRAUGHT_BOARD_SIZE/width;//gives the conversion to coordinates
+		int y = mouseY*ENGLISH_DRAUGHT_BOARD_SIZE/width;
+
+
+		if(!clicked)//they start
+		{
+			Move result = player.alphaBeta(game, 8,false,true);//CHANGE TO INCREASE/DECREASE DIFFICULTY
+			game.makeMove(result);
+			redraw();
+			clicked = !clicked;
+		}
+		else if(clickedMouse)//piece to move
+		{
+			xCordOfPieceToMove = x;
+			yCordOfPieceToMove = y;
+			clickedMouse = !clickedMouse;
+		}
+		else//position to move to
+		{
+			move = new Move(new Position(yCordOfPieceToMove,xCordOfPieceToMove), new Position(y,x));//swapped x and y because of how the grid is drawn
+			Piece piece = game.getPiece(yCordOfPieceToMove,xCordOfPieceToMove);
+			if(piece != null)
+			{
+				ArrayList<Move> moves = game.getMoves(piece);
+				makeMove:for(Move m: moves)
+				{
+					if(areMovesEqual(move, m))
+					{
+						game.makeMove(m);
+						redraw();
+						clicked = !clicked;
+						break makeMove;	
+					}
+				}
+				
+			}
+			clickedMouse = !clickedMouse;
+		}
+	}
+	
+	/**
+	 * if the moves are equal returns true, otherwise false
+	 * @param m1 a move
+	 * @param m2 another move
+	 * @return a boolean
+	 */
+	public boolean areMovesEqual(Move m1, Move m2)
+	{
+		while(m1 != null)
+		{
+			if(m1.getStartPosition().equals(m2.getStartPosition()) && m1.getEndPosition().equals(m2.getEndPosition()))
+			{
+				m1 = m1.getNextMove();
+				m2 = m2.getNextMove();
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
 	public static void p(String text)
 	{
 		System.out.println(text);

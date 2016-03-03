@@ -15,6 +15,15 @@ public class Position {
 		return x;
 	}
 
+	public boolean equals(Position pos)
+	{
+		if(x == pos.getX() && y==pos.getY())
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	public void setX(int x) {
 		if(x < ENGLISH_DRAUGHT_BOARD_SIZE && x > -1)
 		{

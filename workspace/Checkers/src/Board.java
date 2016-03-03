@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 
-public class Board implements Constants
+public class Board implements Constants, Game
 {
 	private HashMap<String, Piece> board;
 	private Stack<HashMap<String, Piece>> oldBoards = new Stack<HashMap<String, Piece>>();
@@ -15,7 +15,7 @@ public class Board implements Constants
 	private final int UP = -1;
 	private final int  DOWN= 1;
 	
-	public Piece getPieceTesting(int x,int y)
+	public Piece getPiece(int x,int y)
 	{
 		return board.get(makeCords(x,y));
 	}
