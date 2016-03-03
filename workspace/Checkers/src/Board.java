@@ -465,18 +465,22 @@ public class Board
 	{
 		oldBoards.push(makeCopy());
 		
-		Piece temp = board.get(m.getStartPosition().getCords());
+		Piece temp = board.get(m.getStartPosition().getCords()); //grab the piece to work with
+		
 		do
 		{
 			board.remove(m.getStartPosition().getCords());//remove piece from starting position
-			if(m.getPassedOverDuringJumpPosition() != null)
+			
+			if(m.getPassedOverDuringJumpPosition() != null) 
 			{
 				board.remove(m.getPassedOverDuringJumpPosition().getCords());//remove piece it jumped
 			}
-			temp.setPosition(m.getEndPosition());
+			
+			temp.setPosition(m.getEndPosition()); //set the pieces end position in the piece
 			isPieceKing(temp);
 			board.put(m.getEndPosition().getCords(), temp);
 	
+			m = m.getNextMove();
 		}while(m.getNextMove() != null);
 	}
 	
