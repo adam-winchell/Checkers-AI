@@ -498,7 +498,7 @@ public class Board
 	
 			m = m.getNextMove();
 			
-		}while(m.getNextMove() != null);
+		}while(m != null);
 	}
 	
 	/**
