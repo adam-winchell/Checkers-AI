@@ -41,10 +41,16 @@ public class test {
 		}
 		
 		
+		board.makeMove(moves.get(1));
+		p(board.toString());
+		board.undoMove();
+		p(board.toString());
 	}
 	public static void p(String text)
 	{
 		System.out.println(text);
 	}
+	
+	
 
 }

@@ -3,18 +3,12 @@ import java.util.HashMap;
 import java.util.Stack;
 
 
-public class Board 
+public class Board implements Constants
 {
 	private HashMap<String, Piece> board;
 	private Stack<HashMap<String, Piece>> oldBoards = new Stack<HashMap<String, Piece>>();
 	private int whiteCount;
 	private int blackCount;
-	private final int ENGLISH_DRAUGHT_PIECE_COUNT = 12;
-	private final int ENGLISH_DRAUGHT_BOARD_SIZE = 8;
-	private final int ENGLISH_DRAUGHT_BLACK_KING_HOME = 0;
-	private final int ENGLISH_DRAUGHT_WHITE_KING_HOME = ENGLISH_DRAUGHT_BOARD_SIZE -1;
-	private final int ENGLISH_DRAUGHT_NUMBER_OF_ROWS_FOR_PIECES = 3;
-	private final int ENGLISH_DRAUGHT_WHITE_OFFSET = ENGLISH_DRAUGHT_BOARD_SIZE - ENGLISH_DRAUGHT_NUMBER_OF_ROWS_FOR_PIECES;
 	private boolean isWhiteTurn = true;
 	private final int LEFT = -1;
 	private final int RIGHT = 1;
@@ -34,6 +28,22 @@ public class Board
 	public void deleteTesting(int x, int y)
 	{
 		board.remove(makeCords(x,y));
+	}
+	
+	/**
+	 * gets all the pieces from the board
+	 * @return arraylist of all the pieces
+	 */
+	public ArrayList<Piece> getPieces()
+	{
+		ArrayList<Piece> result = new ArrayList<Piece>();
+		
+		for(Piece p: board.values())
+		{
+			result.add(p);
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -476,7 +486,7 @@ public class Board
 		isWhiteTurn = !(isWhiteTurn); 
 	}
 	/**
-	 * Makes the specified move.  As of now if a piece becomes a king during its movement, that is not taken into account when determing said movement
+	 * Makes the specified move and checks to see if the piece should become a king
 	 * @param m
 	 */
 	private void doMove(Move m)
