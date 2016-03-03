@@ -11,6 +11,15 @@ public class Move
 		this.startPosition = startPosition;
 		this.endPosition = endPosition;
 		nextMove = null;
+		this.passedOverDuringJumpPosition = null;
+	}
+	
+	public Move(Position startPosition, Position endPosition, Position passedOverDuringJumpPosition)
+	{
+		this.startPosition = startPosition;
+		this.endPosition = endPosition;
+		nextMove = null;
+		this.passedOverDuringJumpPosition = passedOverDuringJumpPosition;
 	}
 
 	

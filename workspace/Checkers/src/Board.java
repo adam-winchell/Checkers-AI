@@ -9,6 +9,8 @@ public class Board
 	private int blackCount;
 	private final int ENGLISH_DRAUGHT_PIECE_COUNT = 12;
 	private final int ENGLISH_DRAUGHT_BOARD_SIZE = 8;
+	private final int ENGLISH_DRAUGHT_BLACK_KING_HOME = 0;
+	private final int ENGLISH_DRAUGHT_WHITE_KING_HOME = ENGLISH_DRAUGHT_BOARD_SIZE -1;
 	private final int ENGLISH_DRAUGHT_NUMBER_OF_ROWS_FOR_PIECES = 3;
 	private final int ENGLISH_DRAUGHT_WHITE_OFFSET = ENGLISH_DRAUGHT_BOARD_SIZE - ENGLISH_DRAUGHT_NUMBER_OF_ROWS_FOR_PIECES;
 	private final boolean WHITE =true;
@@ -286,7 +288,7 @@ public class Board
 					if(jumpPiece == null)
 					{
 						//we can jump
-						Move move = new Move(position,jumpPosition);
+						Move move = new Move(position,jumpPosition,destinationPosition);
 						
 						//setting up a temporary piece below to use in the next set of calls
 						Piece temp = new Piece(piece.getIsWhite(),jumpPosition,piece.getIsKing());
@@ -352,7 +354,7 @@ public class Board
 					if(jumpPiece == null)
 					{
 						//we can jump
-						Move move = new Move(position,jumpPosition);
+						Move move = new Move(position,jumpPosition,destinationPosition);
 						
 						//setting up a temporary piece below to use in the next set of calls
 						Piece temp = new Piece(piece.getIsWhite(),jumpPosition,piece.getIsKing());
@@ -439,5 +441,42 @@ public class Board
 		}
 		
 		return buff.toString();
+	}
+	
+	/**
+	 * Makes the specified move.  As of now if a piece becomes a king during its movement, that is not taken into account when determing said movement
+	 * @param m
+	 */
+	public void makeMove(Move m)
+	{
+		Piece temp = board.get(m.getStartPosition().getCords());
+		do
+		{
+			board.remove(m.getStartPosition().getCords());//remove piece from starting position
+			if(m.getPassedOverDuringJumpPosition() != null)
+			{
+				board.remove(m.getPassedOverDuringJumpPosition().getCords());//remove piece it jumped
+			}
+			temp.setPosition(m.getEndPosition());
+			isPieceKing(temp);
+			board.put(m.getEndPosition().getCords(), temp);
+	
+		}while(m.getNextMove() != null);
+	}
+	
+	/**
+	 * Upgrades a piece to a king if it makes it to the proper place
+	 * @param piece
+	 */
+	public void isPieceKing(Piece piece)
+	{
+		if(piece.getIsWhite() && piece.getPosition().getX() == ENGLISH_DRAUGHT_WHITE_KING_HOME)
+		{
+			piece.setIsKing(true);
+		}
+		else if(!(piece.getIsWhite()) && piece.getPosition().getX() == ENGLISH_DRAUGHT_BLACK_KING_HOME)
+		{
+			piece.setIsKing(true);
+		}
 	}
 }

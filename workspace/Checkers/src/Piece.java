@@ -11,7 +11,12 @@ public class Piece
 		this.position = position;
 	}
 
-	
+	public Piece(Boolean isWhite, Position position, boolean isKing)
+	{
+		this.isWhite = isWhite;
+		this.position = position;
+		this.isKing = isKing;
+	}
 	
 	public Position getPosition() {
 		return position;

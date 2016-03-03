@@ -14,21 +14,37 @@ public class test {
 		
 		Board board = new Board();
 		board.insertPieceTesting(3,2,false);
-		System.out.println(board.toString());
+		board.insertPieceTesting(3,4,false);
 		
-		Piece piece = board.getPieceTesting(2, 3);
+		Piece piece = board.getPieceTesting(2, 1);
+		piece.setIsKing(true);
+		
+		board.deleteTesting(2,5);
+		
+		System.out.println(board.toString());
 		
 		System.out.println("The piece's color is white: "+piece.getIsWhite());
 		ArrayList<Move> moves = board.getMoves(piece);
 		
+		
 		for(Move m: moves)
 		{
+			System.out.println(m.toString());
+			System.out.println("I jumped over: "+m.getPassedOverDuringJumpPosition());
 			while(m.getNextMove() != null)
 			{
-				System.out.println(m.toString());
-				m = m.getNextMove();
+				m=m.getNextMove();
+				p(m.toString());
+				System.out.println("I jumped over: "+m.getPassedOverDuringJumpPosition());
 			}
+			System.out.println("---------");
 		}
+		
+		
+	}
+	public static void p(String text)
+	{
+		System.out.println(text);
 	}
 
 }
