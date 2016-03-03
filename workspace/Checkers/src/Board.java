@@ -153,7 +153,6 @@ public class Board
 		{
 			if(m != null)
 			{
-				System.out.println(m);
 				mainList.add(m);
 			}
 		}
