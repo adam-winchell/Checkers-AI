@@ -1,10 +1,12 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Stack;
 
 
 public class Board 
 {
 	private HashMap<String, Piece> board;
+	private Stack<HashMap<String, Piece>> oldBoards = new Stack<HashMap<String, Piece>>();
 	private int whiteCount;
 	private int blackCount;
 	private final int ENGLISH_DRAUGHT_PIECE_COUNT = 12;
@@ -444,11 +446,25 @@ public class Board
 	}
 	
 	/**
+	 * Copies the board and returns it
+	 * @return a new copy of the board
+	 */
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Piece> makeCopy()
+	{
+		HashMap<String, Piece> result = new HashMap<String, Piece>();
+		result = (HashMap<String, Piece>) board.clone();
+		return result;
+	}
+	
+	/**
 	 * Makes the specified move.  As of now if a piece becomes a king during its movement, that is not taken into account when determing said movement
 	 * @param m
 	 */
 	public void makeMove(Move m)
 	{
+		oldBoards.push(makeCopy());
+		
 		Piece temp = board.get(m.getStartPosition().getCords());
 		do
 		{
@@ -478,5 +494,10 @@ public class Board
 		{
 			piece.setIsKing(true);
 		}
+	}
+	
+	public void undoMove()
+	{
+		board = oldBoards.pop();
 	}
 }
