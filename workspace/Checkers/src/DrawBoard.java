@@ -10,11 +10,13 @@ public class DrawBoard extends PApplet implements Constants
 {
 	
 	Board game = new Board();
+	int squareSize;
 	
 	
 	public void setup()
 	{
 		size(SCREEN_SIZE, SCREEN_SIZE);
+		squareSize = width/ENGLISH_DRAUGHT_BOARD_SIZE;
 	}
 	
 	public void draw()
@@ -52,17 +54,17 @@ public class DrawBoard extends PApplet implements Constants
 						flip = false;
 					}
 				}
-				rect(i*width/ENGLISH_DRAUGHT_BOARD_SIZE, j*width/ENGLISH_DRAUGHT_BOARD_SIZE, width/ENGLISH_DRAUGHT_BOARD_SIZE, width/ENGLISH_DRAUGHT_BOARD_SIZE);
+				rect(i*squareSize, j*squareSize, squareSize, squareSize);
 			}
 		}
 	}
 	public void drawPieces()
 	{
-		ArrayList<Piece> pieces = ;
+		ArrayList<Piece> pieces = game.getPieces();
 
-		for(int i = 0; i < pieces.size(); i += 3)
+		for(Piece p: pieces)
 		{
-			if(//is white)
+			if(p.getIsWhite())
 			{
 				
 				fill(255);//white
@@ -72,16 +74,21 @@ public class DrawBoard extends PApplet implements Constants
 			{
 				fill(0);//black
 			}
-			
-			ellipse(
+			Position pos = p.getPosition();
 
-			if((int)pieces.get(i) > 2)
+			ellipse(pos.getY()*PIECE_OFFSET + squareSize/2,pos.getX()*PIECE_OFFSET + squareSize/2,PIECE_SIZE,PIECE_SIZE);
+
+			if(p.getIsKing())
 			{
-				//its a king
-				fill(255,0,0);
+				fill(255,0,0);//red
 				textSize(26);
-				text('K',);
+				text('K',1,1);
 			}
 		}
+	}
+	
+	public static void p(String text)
+	{
+		System.out.println(text);
 	}
 }
