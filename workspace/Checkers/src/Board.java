@@ -32,6 +32,9 @@ public class Board
 		board.remove(makeCords(x,y));
 	}
 	
+	/**
+	 * constructor for board
+	 */
 	public Board()
 	{
 		board = new HashMap<String, Piece>();
@@ -41,11 +44,21 @@ public class Board
 		blackCount = ENGLISH_DRAUGHT_PIECE_COUNT;
 	}
 	
+	/**
+	 * Makes string coordinate that is used to find pieces in the hasmap
+	 * @param x
+	 * @param y
+	 * @return string coordinates
+	 */
 	private String makeCords(int x, int y)
 	{
 		return "("+x+","+y+")";
 	}
 	
+	/**
+	 * inserts white pieces into the board
+	 * @param board
+	 */
 	private void insertWhitePieces(HashMap<String, Piece> board)
 	{
 		for(int j=0;j<ENGLISH_DRAUGHT_NUMBER_OF_ROWS_FOR_PIECES;j++)
@@ -65,6 +78,10 @@ public class Board
 		}
 	}
 	
+	/**
+	 * inserts black pieces into the board
+	 * @param board
+	 */
 	private void insertBlackPieces(HashMap<String, Piece> board)
 	{
 		for(int j=ENGLISH_DRAUGHT_WHITE_OFFSET;j<ENGLISH_DRAUGHT_BOARD_SIZE;j++)
@@ -84,6 +101,11 @@ public class Board
 		}
 	}
 	
+	/**
+	 * calls the proper method for the given piece
+	 * @param piece
+	 * @return arraylist of all the moves for the given piece
+	 */
 	public ArrayList<Move> getMoves(Piece piece)
 	{
 		ArrayList<Move> moves = null;
@@ -103,6 +125,11 @@ public class Board
 		return moves;
 	}
 	
+	/**
+	 * calls the proper methods to determine the potential moves for a king and collects the results
+	 * @param piece
+	 * @return a list of all the potential moves
+	 */
 	private ArrayList<Move> getKingMoves(Piece piece)
 	{
 		ArrayList<Move> result = new ArrayList<Move>();
@@ -115,6 +142,11 @@ public class Board
 		return result;
 	}
 	
+	/**
+	 * Combines two lists
+	 * @param mainList
+	 * @param otherList
+	 */
 	private void combineLists(ArrayList<Move> mainList, ArrayList<Move> otherList)
 	{
 		for(Move m: otherList)
@@ -126,7 +158,11 @@ public class Board
 			}
 		}
 	}
-	
+	/**
+	 * calls the proper methods to determine the potential moves for a white piece and collects the results
+	 * @param piece
+	 * @return a list of all the potential moves
+	 */
 	private ArrayList<Move> getWhiteMoves(Piece piece)
 	{	
 		ArrayList<Move> result = new ArrayList<Move>();
@@ -137,6 +173,11 @@ public class Board
 		return result;
 	}
 	
+	/**
+	 * calls the proper methods to determine the potential moves for a black piece and collects the results
+	 * @param piece
+	 * @return a list of all the potential moves
+	 */
 	private ArrayList<Move> getBlackMoves(Piece piece)
 	{		
 		ArrayList<Move> result = new ArrayList<Move>();
@@ -146,7 +187,11 @@ public class Board
 		
 		return result;
 	}
-	
+	/**
+	 * Decides which method to all to determine jumps
+	 * @param piece
+	 * @return arraylist with the moves that involve jumping
+	 */
 	private ArrayList<Move> getMovesJumping(Piece piece)
 	{
 		ArrayList<Move> moves = null;
@@ -167,11 +212,17 @@ public class Board
 		return moves;
 	}
 	
+	/**
+	 * quick method for printing
+	 * @param text
+	 */
 	private void p(String text)
 	{
 		System.out.println(text);
 	}
-	
+	/**
+	 * Calls proper jumping methods for a king piece and collects the results
+	 */
 	private ArrayList<Move> getKingMovesJumping(Piece piece)
 	{
 		ArrayList<Move> result = new ArrayList<Move>();
@@ -183,7 +234,9 @@ public class Board
 		
 		return result;
 	}
-	
+	/**
+	 * Calls proper jumping methods for a white piece and collects the results
+	 */
 	private ArrayList<Move> getWhiteMovesJumping(Piece piece)
 	{
 		ArrayList<Move> result = new ArrayList<Move>();
@@ -194,6 +247,9 @@ public class Board
 		return result;
 	}
 	
+	/**
+	 * Calls proper jumping methods for a black piece and collects the results
+	 */
 	private ArrayList<Move> getBlackMovesJumping(Piece piece)
 	{
 		ArrayList<Move> result = new ArrayList<Move>();
@@ -203,6 +259,14 @@ public class Board
 		
 		return result;
 	}
+	
+	/**
+	 * Called when the piece in question is already in a jump and looking for more jumps
+	 * @param piece
+	 * @param rowDirectionMove
+	 * @param columnDirectionMove
+	 * @return arraylist of all moves that are a part of a jump
+	 */
 	private ArrayList<Move> moveJumping(Piece piece, int rowDirectionMove, int columnDirectionMove)
 	{
 		ArrayList<Move> moves = new ArrayList<Move>();
@@ -257,6 +321,13 @@ public class Board
 	 * the x cordinate of the position is the row number
 	 */
 	
+	/**
+	 * Finds all potential moves for the given piece, will call getMovesJumping if a jump is availiable
+	 * @param piece is the piece being worked on
+	 * @param rowDirectionMove
+	 * @param columnDirectionMove
+	 * @return an arraylist of all potential moves
+	 */
 	private ArrayList<Move> move(Piece piece, int rowDirectionMove, int columnDirectionMove)
 	{
 		ArrayList<Move> moves = new ArrayList<Move>();
@@ -312,15 +383,31 @@ public class Board
 		return moves;
 	}
 	
+	/**
+	 * Used to add pieces temporarily to the board so the jumping methods are not called forever
+	 * @param pos is the position of the piece
+	 * @param piece
+	 */
 	private void addPieceTemporary(Position pos, Piece piece)
 	{
 		board.put(makeCords(pos.getX(),pos.getY()), piece);
 	}
 	
+	/**
+	 * Deletes the temporary piece used during the jumping methods
+	 * @param pos is the position of the piece to delete
+	 */
 	private void removeTemporaryPiece(Position pos)
 	{
 		board.remove(makeCords(pos.getX(),pos.getY()));
 	}
+	
+	/**
+	 * Returns a string that represents the board
+	 * - is empty square
+	 * 0 is white
+	 * X is black
+	 */
 	
 	public String toString()
 	{
