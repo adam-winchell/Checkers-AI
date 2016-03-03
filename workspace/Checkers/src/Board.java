@@ -27,6 +27,11 @@ public class Board
 		board.put(makeCords(x,y), new Piece(isWhite,new Position(x,y)));
 	}
 	
+	public void deleteTesting(int x, int y)
+	{
+		board.remove(makeCords(x,y));
+	}
+	
 	public Board()
 	{
 		board = new HashMap<String, Piece>();
@@ -158,7 +163,13 @@ public class Board
 		{
 			moves = getBlackMovesJumping(piece);
 		}
+		
 		return moves;
+	}
+	
+	private void p(String text)
+	{
+		System.out.println(text);
 	}
 	
 	private ArrayList<Move> getKingMovesJumping(Piece piece)
@@ -215,9 +226,10 @@ public class Board
 						Move move = new Move(position,jumpPosition);
 						
 						//setting up a temporary piece below to use in the next set of calls
-						Piece temp = new Piece(piece.getIsWhite(),jumpPosition);
-						temp.setIsKing(piece.getIsKing());
+						Piece temp = new Piece(piece.getIsWhite(),jumpPosition,piece.getIsKing());
 						
+						addPieceTemporary(jumpPosition, temp); //to occupy the space so jumping bug is squashed
+
 						ArrayList<Move> potentialJumps = getMovesJumping(temp);
 						
 						for(Move m: potentialJumps)
@@ -226,6 +238,12 @@ public class Board
 							temporary.setNextMove(m);
 							moves.add(temporary); 
 						}
+						if(potentialJumps.isEmpty())
+						{
+							moves.add(move);
+						}
+						
+						removeTemporaryPiece(jumpPosition); //removed temporary piece
 					}
 				}
 				
@@ -267,8 +285,9 @@ public class Board
 						Move move = new Move(position,jumpPosition);
 						
 						//setting up a temporary piece below to use in the next set of calls
-						Piece temp = new Piece(piece.getIsWhite(),jumpPosition);
-						temp.setIsKing(piece.getIsKing());
+						Piece temp = new Piece(piece.getIsWhite(),jumpPosition,piece.getIsKing());
+						
+						addPieceTemporary(jumpPosition, temp); //to occupy the space so jumping bug is squashed
 						
 						ArrayList<Move> potentialJumps = getMovesJumping(temp);
 						
@@ -278,6 +297,12 @@ public class Board
 							temporary.setNextMove(m);
 							moves.add(temporary); 
 						}
+						if(potentialJumps.isEmpty())
+						{
+							moves.add(move);
+						}
+						
+						removeTemporaryPiece(jumpPosition); //removed temporary piece
 					}
 				}
 				
@@ -285,6 +310,16 @@ public class Board
 		}
 		
 		return moves;
+	}
+	
+	private void addPieceTemporary(Position pos, Piece piece)
+	{
+		board.put(makeCords(pos.getX(),pos.getY()), piece);
+	}
+	
+	private void removeTemporaryPiece(Position pos)
+	{
+		board.remove(makeCords(pos.getX(),pos.getY()));
 	}
 	
 	public String toString()
